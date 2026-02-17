@@ -16,22 +16,25 @@ def parse_triples(line: str):
     assert len(nums) % 3 == 0
     return [(nums[i], nums[i+1], nums[i+2]) for i in range(0, len(nums), 3)]
 
-def init_memory(PM, init_line1: str, init_line2: str):
-    """
-    Returns: used_frames set
-    """
-    used = set()
+def init_memory(PM, D, init_line1: str, init_line2: str):
+    used = {0, 1}
 
     for s, z, f_pt in parse_triples(init_line1):
-        PM[2*s] = z
-        PM[2*s + 1] = f_pt
+        PM[2 * s] = z
+        PM[2 * s + 1] = f_pt
         if f_pt > 0:
             used.add(f_pt)
 
     for s, p, f_page in parse_triples(init_line2):
-        f_pt = PM[2*s + 1]
+        f_pt = PM[2 * s + 1]
+
         if f_pt > 0:
-            PM[f_pt * FRAME_SIZE + p] = f_page
+            PM[f_pt * 512 + p] = f_page
+        elif f_pt < 0:
+            D[-f_pt][p] = f_page
+        else:
+            pass
+
         if f_page > 0:
             used.add(f_page)
 
@@ -86,14 +89,15 @@ def translate_va(va, PM, D, free_frames: deque, demand_paging: bool):
 
     return page * FRAME_SIZE + w
 
-def run(init_path, va_path, out_path, demand_paging: bool, D):
+def run(init_path = 'init.txt', va_path = 'input.txt', out_path = 'output.txt', demand_paging = False):
     PM = [0] * PM_SIZE
+    D = [[0]*512 for _ in range(1024)]
 
     with open(init_path) as f:
         line1 = f.readline().strip()
         line2 = f.readline().strip()
 
-    used = init_memory(PM, line1, line2)
+    used = init_memory(PM, D, line1, line2)
     free_frames = build_free_frames(used)
 
     with open(va_path) as f:
