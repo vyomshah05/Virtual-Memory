@@ -1,11 +1,13 @@
-Virtual Memory Manager
-How to Run
+# Virtual Memory Manager
+## How to Run
 
 This program simulates a virtual memory system with optional demand paging.
 
-Command Format
-python main.py <init_file> <va_file> <output_file> <demand_paging>
-Arguments
+### Command Format
+
+`python main.py <init_file> <va_file> <output_file> <demand_paging>`
+
+### Arguments
 
 <init_file> — Initialization file
 
@@ -15,12 +17,16 @@ Arguments
 
 <demand_paging> — true or false
 
-Example Runs
+### Example Runs
 Without Demand Paging
-python main.py tests/init-no-dp.txt tests/input-no-dp.txt tests/output-no-dp.txt false
+
+`python main.py tests/init-no-dp.txt tests/input-no-dp.txt tests/output-no-dp.txt false`
+
 With Demand Paging
-python main.py tests/init-dp.txt tests/input-dp.txt tests/output-dp.txt true
-Notes
+
+`python main.py tests/init-dp.txt tests/input-dp.txt tests/output-dp.txt true`
+
+## Notes
 
 Use true to enable demand paging.
 
